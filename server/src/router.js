@@ -4,6 +4,7 @@ const isLoggedIn = require("./middleware/isLoggedIn");
 const createTodoRoute = require("./routes/createTodoRoute");
 const readTodosRoute = require("./routes/readTodosRoute");
 const updateTodosRoute = require("./routes/updateTodosRoute");
+const deleteTodoRoute = require("./routes/deleteTodoRoute");
 
 const router = express.Router();
 
@@ -18,5 +19,8 @@ router.get("/todos", isLoggedIn, readTodosRoute);
 
 //update
 router.put("/todos/:id", isLoggedIn, updateTodosRoute);
+
+//delete
+router.delete("/todos/:id", isLoggedIn, deleteTodoRoute);
 
 module.exports = router;
