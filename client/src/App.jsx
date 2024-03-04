@@ -1,17 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import readTodosRequest from "./api/readTodosRequest";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
   useEffect(() => {
-    readTodosRequest().then((allTodos) => {
-      console.log(allTodos);
-    });
+    readTodosRequest().then(setTodos);
   }, []);
 
   return (
     <div>
-      <h1>hello</h1>
+      {todos.map((todo) => (
+        <div key={todo._id}>
+          {todo.text}
+          {`${todo.completed}`}
+        </div>
+      ))}
     </div>
   );
 }
