@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import readTodosRequest from "./api/readTodosRequest";
+import { useQuery } from "react-query";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function App() {
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-    readTodosRequest().then(setTodos);
-  }, []);
+  const { isLoading, data: todos } = useQuery("todos", readTodosRequest);
 
   return (
     <div>
-      {todos.map((todo) => (
-        <div key={todo._id}>
-          {todo.text}
-          {`${todo.completed}`}
-        </div>
-      ))}
+      {isLoading ? (
+        <ClipLoader size={50} />
+      ) : (
+        todos.map((todo) => (
+          <div key={todo._id}>
+            {todo.text}
+            {`${todo.completed}`}
+          </div>
+        ))
+      )}
     </div>
   );
 }
