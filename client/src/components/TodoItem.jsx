@@ -1,12 +1,23 @@
 import React from "react";
 import { useQueryClient, useMutation, QueryClient } from "react-query";
 import updateTodoRequest from "../api/updateTodoRequest";
+import deleteTodoRequest from "../api/deleteTodoRequest";
 
 export const TodoItem = ({ todo }) => {
   const queryClient = useQueryClient();
 
   const { mutate: updateTodo } = useMutation(
     (updateTodo) => updateTodoRequest(updateTodo),
+
+    {
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["todos"] });
+      },
+    }
+  );
+
+  const { mutate: deleteTodo } = useMutation(
+    (updateTodo) => deleteTodoRequest(updateTodo),
 
     {
       onSettled: () => {
@@ -39,7 +50,7 @@ export const TodoItem = ({ todo }) => {
             })
           }
         />
-
+        <button onClick={() => deleteTodo(todo)}>delet</button>
         {todo.text}
         {`${todo.completed}`}
       </div>
