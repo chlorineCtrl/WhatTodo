@@ -7,5 +7,5 @@ export default (todo) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json());
+  });
 };

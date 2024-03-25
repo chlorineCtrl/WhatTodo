@@ -51,8 +51,6 @@ export const TodoItem = ({ todo }) => {
           }
         />
         <button onClick={() => deleteTodo(todo)}>delet</button>
-        {todo.text}
-        {`${todo.completed}`}
       </div>
     </div>
   );
