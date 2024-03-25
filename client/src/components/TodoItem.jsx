@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useQueryClient, useMutation, QueryClient } from "react-query";
 import updateTodoRequest from "../api/updateTodoRequest";
 import deleteTodoRequest from "../api/deleteTodoRequest";
+import { debounce } from "lodash";
 
 export const TodoItem = ({ todo }) => {
   const queryClient = useQueryClient();
@@ -15,7 +16,9 @@ export const TodoItem = ({ todo }) => {
       },
     }
   );
-
+  const debouncedUpdateTodo = useCallback(debounce(updateTodo, 600), [
+    updateTodo,
+  ]);
   const { mutate: deleteTodo } = useMutation(
     (updateTodo) => deleteTodoRequest(updateTodo),
 
@@ -44,7 +47,7 @@ export const TodoItem = ({ todo }) => {
           type="text"
           value={todo.text}
           onChange={(e) =>
-            updateTodo({
+            debouncedUpdateTodo({
               ...todo,
               text: e.target.value,
             })
