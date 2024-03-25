@@ -5,10 +5,9 @@ import updateTodoRequest from "../api/updateTodoRequest";
 export const TodoItem = ({ todo }) => {
   const queryClient = useQueryClient();
 
-  const { mutate: toggleCompletion } = useMutation(
-    () => {
-      return updateTodoRequest({ ...todo, completed: !todo.completed });
-    },
+  const { mutate: updateTodo } = useMutation(
+    (updateTodo) => updateTodoRequest(updateTodo),
+
     {
       onSettled: () => {
         queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -22,8 +21,25 @@ export const TodoItem = ({ todo }) => {
         <input
           checked={todo.completed}
           type="checkbox"
-          onChange={toggleCompletion}
+          onChange={() =>
+            updateTodo({
+              ...todo,
+              completed: !todo.completed,
+            })
+          }
         />
+
+        <input
+          type="text"
+          value={todo.text}
+          onChange={(e) =>
+            updateTodo({
+              ...todo,
+              text: e.target.value,
+            })
+          }
+        />
+
         {todo.text}
         {`${todo.completed}`}
       </div>
